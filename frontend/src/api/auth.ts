@@ -10,7 +10,7 @@ export const signup = (
   email: string,
   password: string
 ) => {
-  return API.post("/signup", {
+  return API.post("/register", {
     first_name: firstName,
     last_name: lastName,
     email,

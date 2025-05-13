@@ -1,8 +1,8 @@
 import { useState, type FC } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import Loader from "../components/Loader";
 import { login } from "../api/auth";
-import { FaUser } from "react-icons/fa";
+import { FaUser, FaLock } from "react-icons/fa";
 import { toast } from "react-toastify";
 
 const Login: FC = () => {
@@ -56,58 +56,106 @@ const Login: FC = () => {
       setIsLoading(false);
     }
   };
+
   return (
-    <div className="h-full animated-gradient flex items-center justify-center">
-      <div className="bg-white p-8 rounded shadow-md w-full max-w-sm">
-        <span className="text-2xl font-bold mb-6 flex items-center justify-center gap-2">
-          <FaUser size={32} /> Login
-        </span>
-
-        <form onSubmit={handleLogin} className="space-y-4">
-          <div>
-            <label className="block mb-1 text-sm font-medium">Email</label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Enter your email"
-              className="w-full px-3 py-2 outline-none border-none bg-gray-100 rounded"
-            />
-            {errors.email && (
-              <p className="text-red-500 text-sm mt-1">{errors.email}</p>
-            )}
+    <div className="min-h-screen bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center p-4">
+      <div className="bg-white rounded-xl shadow-2xl w-full max-w-md overflow-hidden">
+        <div className="bg-gradient-to-r from-indigo-600 to-purple-600 p-6 text-white text-center">
+          <div className="flex items-center justify-center gap-3">
+            <FaUser className="h-8 w-8" />
+            <h1 className="text-2xl font-bold">Welcome Back</h1>
           </div>
+          <p className="mt-2 opacity-90">Sign in to your account</p>
+        </div>
 
-          <div>
-            <label className="block mb-1 text-sm font-medium">Password</label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Enter your password"
-              className="w-full px-3 py-2 outline-none border-none bg-gray-100 rounded"
-            />
-            {errors.password && (
-              <p className="text-red-500 text-sm mt-1">{errors.password}</p>
-            )}
+        <div className="p-6 sm:p-8">
+          <form onSubmit={handleLogin} className="space-y-5">
+            <div className="space-y-2">
+              <label className="block text-sm font-medium text-gray-700">
+                Email Address
+              </label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <svg
+                    className="h-5 w-5 text-gray-400"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+                    <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+                  </svg>
+                </div>
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Enter your email"
+                  className={`w-full pl-10 pr-3 py-3 rounded-lg border ${
+                    errors.email ? "border-red-500" : "border-gray-300"
+                  } outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all`}
+                />
+              </div>
+              {errors.email && (
+                <p className="text-red-500 text-xs mt-1">{errors.email}</p>
+              )}
+            </div>
+
+            <div className="space-y-2">
+              <label className="block text-sm font-medium text-gray-700">
+                Password
+              </label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <FaLock className="h-5 w-5 text-gray-400" />
+                </div>
+                <input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Enter your password"
+                  className={`w-full pl-10 pr-3 py-3 rounded-lg border ${
+                    errors.password ? "border-red-500" : "border-gray-300"
+                  } outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all`}
+                />
+              </div>
+              {errors.password && (
+                <p className="text-red-500 text-xs mt-1">{errors.password}</p>
+              )}
+            </div>
+
+            <button
+              type="submit"
+              disabled={isLoading}
+              className={`w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-white font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all ${
+                isLoading
+                  ? "bg-indigo-400 cursor-not-allowed"
+                  : "bg-indigo-600 hover:bg-indigo-700"
+              }`}
+            >
+              {isLoading ? (
+                <>
+                  <Loader />
+                  Signing in...
+                </>
+              ) : (
+                "Sign in"
+              )}
+            </button>
+          </form>
+
+          <div className="mt-6 text-center text-sm">
+            <p className="text-gray-600">
+              Don't have an account?{" "}
+              <Link
+                to="/signup"
+                className="font-medium text-indigo-600 hover:text-indigo-500"
+              >
+                Sign up
+              </Link>
+            </p>
           </div>
-
-          <button
-            type="submit"
-            className={`w-full text-white py-2 flex items-center justify-center cursor-pointer rounded ${
-              isLoading ? "bg-gray-200" : "bg-blue-500 hover:bg-blue-600"
-            }`}
-          >
-            {isLoading ? <Loader /> : <span>Login</span>}
-          </button>
-        </form>
-
-        <p className="mt-4 text-center text-sm">
-          Don’t have an account?{" "}
-          <a href="/signup" className="text-blue-500 hover:underline">
-            Sign up
-          </a>
-        </p>
+        </div>
       </div>
     </div>
   );

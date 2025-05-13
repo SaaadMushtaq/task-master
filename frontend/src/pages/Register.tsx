@@ -2,7 +2,7 @@ import { useState, type FC } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Loader from "../components/Loader";
 import { signup } from "../api/auth";
-import { FaUserPlus } from "react-icons/fa";
+import { FaUserPlus, FaUser, FaLock, FaEnvelope } from "react-icons/fa";
 import { toast } from "react-toastify";
 
 const Register: FC = () => {
@@ -26,16 +26,13 @@ const Register: FC = () => {
 
     if (!firstName.trim()) {
       err.firstName = "First name is required";
-    }
-    if (firstName.trim() && firstName.length < 3) {
+    } else if (firstName.trim().length < 3) {
       err.firstName = "First name must be at least 3 characters";
     }
 
     if (!lastName.trim()) {
       err.lastName = "Last name is required";
-    }
-
-    if (lastName.trim() && lastName.length < 3) {
+    } else if (lastName.trim().length < 3) {
       err.lastName = "Last name must be at least 3 characters";
     }
 
@@ -63,104 +60,161 @@ const Register: FC = () => {
     setIsLoading(true);
     try {
       await signup(firstName, lastName, email, password);
-      toast.success("Signup successful!");
+      toast.success("Registration successful!");
       navigate("/login");
     } catch (err) {
       console.error(err);
       setErrors((prevErrors) => ({
         ...prevErrors,
-        password: "Signup failed. Try another email.",
+        email: "Email already exists",
       }));
-      toast.error("Error! Failed to signup");
+      toast.error("Registration failed. Please try again.");
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <div className="h-full animated-gradient flex items-center justify-center">
-      <div className="bg-white p-8 rounded shadow-md w-full max-w-sm">
-        <span className="text-2xl font-bold mb-6 flex items-center justify-center gap-2">
-          <FaUserPlus size={32} /> Sign Up
-        </span>
-        <form onSubmit={handleSignup} className="space-y-4">
-          <div>
-            <label className="block mb-1 text-sm font-medium">First Name</label>
-            <input
-              type="text"
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
-              placeholder="Enter your first name"
-              className="w-full px-3 py-2 outline-none border-none bg-gray-100 rounded"
-            />
-            {errors.firstName && (
-              <p className="text-red-500 text-sm mt-1">{errors.firstName}</p>
-            )}
+    <div className="min-h-screen bg-gradient-to-br from-green-500 to-teal-600 flex items-center justify-center p-4">
+      <div className="bg-white rounded-xl shadow-2xl w-full max-w-md overflow-hidden">
+        <div className="bg-gradient-to-r from-green-600 to-teal-600 p-6 text-white text-center">
+          <div className="flex items-center justify-center gap-3">
+            <FaUserPlus className="h-8 w-8" />
+            <h1 className="text-2xl font-bold">Create Account</h1>
           </div>
+          <p className="mt-2 opacity-90">Join our community today</p>
+        </div>
 
-          <div>
-            <label className="block mb-1 text-sm font-medium">Last Name</label>
-            <input
-              type="text"
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
-              placeholder="Enter your last name"
-              className="w-full px-3 py-2 outline-none border-none bg-gray-100 rounded"
-            />
-            {errors.lastName && (
-              <p className="text-red-500 text-sm mt-1">{errors.lastName}</p>
-            )}
+        <div className="p-6 sm:p-8">
+          <form onSubmit={handleSignup} className="space-y-4 sm:space-y-5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <label className="block text-sm font-medium text-gray-700">
+                  First Name
+                </label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <FaUser className="h-4 w-4 text-gray-400" />
+                  </div>
+                  <input
+                    type="text"
+                    value={firstName}
+                    onChange={(e) => setFirstName(e.target.value)}
+                    placeholder="John"
+                    className={`w-full pl-9 pr-3 py-2 sm:py-3 rounded-lg border ${
+                      errors.firstName ? "border-red-500" : "border-gray-300"
+                    } outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all`}
+                  />
+                </div>
+                {errors.firstName && (
+                  <p className="text-red-500 text-xs mt-1">
+                    {errors.firstName}
+                  </p>
+                )}
+              </div>
+
+              <div className="space-y-2">
+                <label className="block text-sm font-medium text-gray-700">
+                  Last Name
+                </label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <FaUser className="h-4 w-4 text-gray-400" />
+                  </div>
+                  <input
+                    type="text"
+                    value={lastName}
+                    onChange={(e) => setLastName(e.target.value)}
+                    placeholder="Doe"
+                    className={`w-full pl-9 pr-3 py-2 sm:py-3 rounded-lg border ${
+                      errors.lastName ? "border-red-500" : "border-gray-300"
+                    } outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all`}
+                  />
+                </div>
+                {errors.lastName && (
+                  <p className="text-red-500 text-xs mt-1">{errors.lastName}</p>
+                )}
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <label className="block text-sm font-medium text-gray-700">
+                Email Address
+              </label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <FaEnvelope className="h-4 w-4 text-gray-400" />
+                </div>
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="your@email.com"
+                  className={`w-full pl-9 pr-3 py-2 sm:py-3 rounded-lg border ${
+                    errors.email ? "border-red-500" : "border-gray-300"
+                  } outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all`}
+                />
+              </div>
+              {errors.email && (
+                <p className="text-red-500 text-xs mt-1">{errors.email}</p>
+              )}
+            </div>
+
+            <div className="space-y-2">
+              <label className="block text-sm font-medium text-gray-700">
+                Password
+              </label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <FaLock className="h-4 w-4 text-gray-400" />
+                </div>
+                <input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="At least 8 characters"
+                  className={`w-full pl-9 pr-3 py-2 sm:py-3 rounded-lg border ${
+                    errors.password ? "border-red-500" : "border-gray-300"
+                  } outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all`}
+                />
+              </div>
+              {errors.password && (
+                <p className="text-red-500 text-xs mt-1">{errors.password}</p>
+              )}
+            </div>
+
+            <button
+              type="submit"
+              disabled={isLoading}
+              className={`w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-white font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-all ${
+                isLoading
+                  ? "bg-green-400 cursor-not-allowed"
+                  : "bg-green-600 hover:bg-green-700"
+              }`}
+            >
+              {isLoading ? (
+                <>
+                  <Loader />
+                  Registering...
+                </>
+              ) : (
+                "Create Account"
+              )}
+            </button>
+          </form>
+
+          <div className="mt-6 text-center text-sm">
+            <p className="text-gray-600">
+              Already have an account?{" "}
+              <Link
+                to="/login"
+                className="font-medium text-green-600 hover:text-green-500"
+              >
+                Sign in
+              </Link>
+            </p>
           </div>
-
-          <div>
-            <label className="block mb-1 text-sm font-medium">Email</label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Enter your email"
-              className="w-full px-3 py-2 outline-none border-none bg-gray-100 rounded"
-            />
-            {errors.email && (
-              <p className="text-red-500 text-sm mt-1">{errors.email}</p>
-            )}
-          </div>
-
-          <div>
-            <label className="block mb-1 text-sm font-medium">Password</label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="At least 8 characters"
-              className="w-full px-3 py-2 outline-none border-none bg-gray-100 rounded"
-            />
-            {errors.password && (
-              <p className="text-red-500 text-sm mt-1">{errors.password}</p>
-            )}
-          </div>
-
-          <button
-            type="submit"
-            className={`w-full text-white py-2 flex items-center justify-center rounded ${
-              isLoading ? "bg-gray-200" : "bg-green-500 hover:bg-green-600"
-            }`}
-          >
-            {isLoading ? (
-              <Loader />
-            ) : (
-              <span className="cursor-pointer">Sign Up</span>
-            )}
-          </button>
-        </form>
-
-        <p className="mt-4 text-center text-sm">
-          Already have an account?
-          <Link to="/login" className="text-blue-500 font-bold hover:underline">
-            {" "}
-            Log in
-          </Link>
-        </p>
+        </div>
       </div>
     </div>
   );
