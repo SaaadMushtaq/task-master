@@ -74,7 +74,7 @@
 
 #### Base URL
 
-`https://your-api-domain.com/api`
+`http://localhost:8080/`
 
 #### Authentication
 
@@ -156,7 +156,7 @@
 
 1. Register a new user:
 
-- Go to http://localhost:3000/
+- Go to http://localhost:5173/
 - You will be redirected to the login page
 - Click "Sign up"
 - Enter your details and click "Create Account"
