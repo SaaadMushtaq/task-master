@@ -70,6 +70,88 @@
 - MONGODB_URI=mongodb+srv://saad:1234@cluster0.ijbu6pq.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
 - JWT_SECRET=secret-123
 
+### API Documentation
+
+#### Base URL
+
+`https://your-api-domain.com/api`
+
+#### Authentication
+
+##### Register User
+
+**Endpoint**: `POST /auth/register`  
+**Description**: Create a new user account
+
+##### Login User
+
+**Endpoint**: `POST /auth/login`  
+**Description**: Login with a registered user accoun
+
+#### Projects
+
+##### Create Project
+
+**Endpoint**: `POST /auth/projects`  
+**Description**: Create a new project
+
+##### Get All Projects
+
+**Endpoint**: `GET /auth/projects`  
+**Description**: Get all projects
+
+##### Get Project By Id
+
+**Endpoint**: `GET /auth/projects/:id`  
+**Description**: Get a project by its id
+
+##### Update Project
+
+**Endpoint**: `PUT /auth/projects/:id`  
+**Description**: Update a project by its id
+
+##### Delete Project
+
+**Endpoint**: `DELETE /auth/projects/:id`  
+**Description**: Delete a project by its id
+
+#### Tasks
+
+##### Create Task
+
+**Endpoint**: `POST /auth/tasks`  
+**Description**: Create a new task
+
+##### Get All Tasks
+
+**Endpoint**: `GET /auth/tasks/:projectId`  
+**Description**: Get all tasks for a project
+
+##### Get Task By Id
+
+**Endpoint**: `GET /auth/tasks/get-by-id/:id`  
+**Description**: Get a task by its id
+
+##### Update Task
+
+**Endpoint**: `PUT /auth/tasks/:id`  
+**Description**: Update a task by its id
+
+##### Delete Task
+
+**Endpoint**: `DELETE /auth/tasks/:id`  
+**Description**: Delete a task by its id
+
+##### Reorder Task
+
+**Endpoint**: `PUT /auth/tasks/reorder`  
+**Description**: Reorder tasks
+
+### Time Taken and which parts are complete
+
+- A total of 6-7 hours(3 hours yesterday and 3+ hours today)
+- All parts of the project are complete except for the bonus functionality to add project memebers(invite by email)
+
 ### Walkthrough
 
 1. Register a new user:
